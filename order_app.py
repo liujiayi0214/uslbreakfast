@@ -12,16 +12,13 @@ MENU = {
         "週二": "蘿蔔糕+豆漿",
         "週三": "煎餃+豆漿",
         "週四": "鹹粥+豆漿",
-        "週五": "花生肉粽+豆漿",
-    },
+        "週五": "花生肉粽+豆漿",},
     "素": {
         "週一": "雜糧饅頭+豆漿",
         "週二": "手工饅頭+豆漿",
         "週三": "雜糧饅頭+豆漿",
         "週四": "素鹹粥+豆漿",
-        "週五": "手工饅頭+豆漿",  # 這裡修正了第五天的菜單
-    },
-}
+        "週五": "手工饅頭+豆漿"},}
 
 ADMIN_PASSWORD = "0000"
 ORDERS_CSV = "orders.csv"
@@ -65,7 +62,7 @@ if mode == "管理員模式":
         st.session_state.orders_df = load_orders()
 
         if not st.session_state.orders_df.empty:
-            st.subheader("📋 訂單紀錄")
+            st.subheader("📋訂單紀錄")
             df = st.session_state.orders_df.sort_values("房號").reset_index(drop=True)
 
             header_cols = st.columns([3,1,1,3,1,2,1,1])
@@ -96,7 +93,7 @@ if mode == "管理員模式":
             st.info("目前尚無訂單")
 
         if not st.session_state.orders_df.empty:
-            st.subheader("📅 每日訂購彙整")
+            st.subheader("📅每日訂購彙整")
             all_rows = []
             for _, row in st.session_state.orders_df.iterrows():
                 items = [x.strip() for x in row["訂餐日與份數"].split(",")]
@@ -181,7 +178,7 @@ else:
                     st.error("請確認基本資料填寫正確")
                 else:
                     # 這裡改用台北時區時間
-                    tz = timezone(timedelta(hours=8))  # 台北是 UTC+8
+                    tz = timezone(timedelta(hours=8))
                     now = datetime.now(tz)
                     new_order = {
                         "時間": now.strftime("%Y-%m-%d %H:%M:%S"),
@@ -190,8 +187,7 @@ else:
                         "電話": phone,
                         "葷/素": st.session_state.current_order["葷/素"],
                         "訂餐日與份數": st.session_state.current_order["訂餐日與份數"],
-                        "加購蛋": egg,
-                    }
+                        "加購蛋": egg,}
                     orders_df = load_orders()
                     orders_df = pd.concat([orders_df, pd.DataFrame([new_order])], ignore_index=True)
                     save_orders(orders_df)
